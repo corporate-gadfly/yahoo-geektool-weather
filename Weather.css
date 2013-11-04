@@ -86,12 +86,12 @@ body {
 	font-size: 10px;
 }
 
-#high {
+#high-lo {
 	top: 10px;
 	z-index:2;
 }
 
-#lo {
+#updatetime {
 	top: 37px;
 	z-index:2;
 }

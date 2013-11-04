@@ -304,6 +304,15 @@ function handleDataFetched (object)
 	lastResults[0] = {hi:object.hi, lo:object.lo, now:object.temp};
 	document.getElementById('high').innerText = getLocalizedString('H: %@º').replace('%@', convertToCelcius(object.hi));
 	document.getElementById('lo').innerText =   getLocalizedString('L: %@º').replace('%@', convertToCelcius(object.lo));
+	// Format the time of the last data refresh
+	var date = new Date();
+	var h = date.getHours(), m = date.getMinutes();
+	var ampm = h >= 12 ? 'pm' : 'am';
+	h = h % 12;
+	h = h ? h : 12; // the hour '0' should be '12'
+	m = m < 10 ? '0' + m : m;
+	document.getElementById('updatetime').innerText =
+			h + ':' + m + ' ' + ampm;
 	updateLocationString(object.city);
 	
 	var fontSize;

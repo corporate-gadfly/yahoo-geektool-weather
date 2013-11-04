@@ -33,8 +33,10 @@ license or right is granted, either expressly or by implication, by Apple.
 			<div id='location' class='text info' role='link'  onclick='goToURL(event);' ></div>
 			<div id='top'      class='background'             onclick='toggleView(event);'></div>
 			
-			<div id='high'     class='text info smallinfo' aria-hidden="true"></div>
-			<div id='lo'       class='text info smallinfo' aria-hidden="true"></div>
+			<div id='high-lo'  class='text info smallinfo' aria-hidden="true">
+				<span id='high'></span> / <span id='lo'></span>
+			</div>
+			<div id='updatetime' class='text info smallinfo' aria-hidden="true"></div>
 			
 			<div id='temperature' aria-hidden="true">--</div>
 			
