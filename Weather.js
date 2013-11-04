@@ -65,15 +65,15 @@ miniIconTable["sun"]			= 'Images/Minis/sun.png';
 miniIconTable["moon-partlycomboclouds"] =
 miniIconTable["partlycloudy"]	= 'Images/Minis/sun-cloud.png';
 miniIconTable["haze"] 			= 'Images/Minis/sun-haze.png';
-miniIconTable["clouds"] 		= 'Images/Minis/clouds.png';	
+miniIconTable["clouds"] 		= 'Images/Minis/clouds.png';
 miniIconTable["fog"] 			= 'Images/Minis/fog.png';
 miniIconTable["rain"] 			= 'Images/Minis/rain.png';
 miniIconTable["rain&clouds"]	= 'Images/Minis/cloud-rain.png';
 miniIconTable["rain&sun"] 		= 'Images/Minis/sun-rain.png';
 miniIconTable["lightening"] 	= 'Images/Minis/lightning.png';
 miniIconTable["flurries"] 		= 'Images/Minis/flurries.png';
-miniIconTable["snow"] 			= 'Images/Minis/snow.png';	
-miniIconTable["ice"] 			= 'Images/Minis/ice.png';		
+miniIconTable["snow"] 			= 'Images/Minis/snow.png';
+miniIconTable["ice"] 			= 'Images/Minis/ice.png';
 miniIconTable["hail"] 			= 'Images/Minis/hail.png';
 miniIconTable["rain&snow"] 		= 'Images/Minis/snow-rain.png';
 miniIconTable["wind"] 			= 'Images/Minis/wind.png';
@@ -97,16 +97,16 @@ function hidpiPath (inPath)
 		//if already @2x then return
 		if ( inPath.indexOf("@2x.png") > -1 )
 			return inPath;
-			
+
 		return inPath.replace(".png", "@2x.png");
 	}
-	
+
 	// strip @2x is not hipdpi
 	if ( inPath.indexOf("@2x.png") > -1 )
 	{
 		return inPath.replace("@2x.png", ".png");
 	}
-	
+
 	return inPath;
 }
 
@@ -119,9 +119,9 @@ function fillInDays (object)
 		{
 			lastDayCode = object.forecast[0].daycode;
 			var c = object.forecast.length;
-			
+
 			if (c > 6) c = 6; // just to be safe
-		
+
 			for (var i=0; i < c; ++i)
 			{
 				var day = document.getElementById('day' + i);
@@ -142,11 +142,11 @@ function getURLForSmallIcon (code)
 			code = code.join("-");
 
 		src = hidpiPath(miniIconTable[code]);
-		
+
 		if (src === undefined)
 			src = null;
 	}
-		
+
 	return src;
 }
 
@@ -155,39 +155,39 @@ function fillInForecast (object)
 	try {
 		var c = object.forecast.length;
 		if (c > 6) c = 6; // just to be safe
-		
+
 		for (var i=0; i<c; ++i)
 		{
 			var forecast = object.forecast[i];
 			var icon = document.getElementById('icon'+i);
 			icon.src = getURLForSmallIcon(forecast.ouricon);
 			icon.alt = forecast.description;
-			
+
 			// high and low for each day
 			document.getElementById('hi'+i).innerText = getLocalizedString('%@º').replace('%@',convertToCelcius(forecast.hi));
 			document.getElementById('low'+i).innerText = getLocalizedString('%@º').replace('%@',convertToCelcius(forecast.lo));
-			
+
 			// Loc version of day summary
 			var daySummaryString = getLocalizedString('%1: %2, High %3º, Low %4º.');
-			
+
 			// replace day of week: 'Tuesday'
 			daySummaryString = daySummaryString.replace('%1', getLocalizedString('long_'+forecast.daycode));
-			
+
 			// replace weather description: 'Fog'
 			daySummaryString = daySummaryString.replace('%2', forecast.description);
-			
+
 			// replace high and lo temp in day summary string
 			daySummaryString = daySummaryString.replace('%3', convertToCelcius(forecast.hi));
 			daySummaryString = daySummaryString.replace('%4', convertToCelcius(forecast.lo));
-			
+
 			window.daySummary[i] = daySummaryString;
-			
+
 			// day summary is complete, update the label of each day
 			document.getElementById('c'+i).setAttribute('aria-label', window.daySummary[i]);
-			
+
 			lastResults[i+1] = {hi:forecast.hi, lo:forecast.lo};
 		}
-	
+
 	} catch (ex) {}
 }
 
@@ -196,27 +196,27 @@ function updateValuesUnitsChanged()
 	if (lastResults != null)
 	{
 		var c = lastResults.length;
-		
+
 		if (c > 0)
 		{
 			var object = lastResults[0];
-			
+
 			// high & low
 			document.getElementById('high').innerText = getLocalizedString('H: %@º').replace('%@', convertToCelcius(object.hi));
 			document.getElementById('lo').innerText =   getLocalizedString('L: %@º').replace('%@', convertToCelcius(object.lo));
-			
+
 			// current temp
 			document.getElementById('temperature').innerText = convertToCelcius(object.now);
 			document.getElementById('temperature').setAttribute('aria-label', getLocalizedString('%@º').replace('%@',convertToCelcius(object.now)) );
-			
-			
+
+
 			for (var i=1; i < c; ++i)
 			{
 				object = lastResults[i];
 				document.getElementById('hi'+(i-1)).innerText = getLocalizedString('%@º').replace('%@',convertToCelcius(object.hi));
 				document.getElementById('low'+(i-1)).innerText = getLocalizedString('%@º').replace('%@',convertToCelcius(object.lo));
 			}
-		
+
 		}
 	}
 }
@@ -237,7 +237,7 @@ function changeLowsColor (isNight)
 {
 	var replace;
 	var to;
-	
+
 	if (isNight)
 	{
 		replace = 'low-day-color';
@@ -248,7 +248,7 @@ function changeLowsColor (isNight)
 		to = 'low-day-color';
 		replace = 'low-night-color';
 	}
-	
+
 	for (var i=0; i<6; ++i)
 	{
 		var element = document.getElementById('low'+i);
@@ -263,9 +263,9 @@ function calculateBackgroundHeight ()
 		height = 71;
 	else
 		height = showLows ? 182 : 162;
-		
+
 	height +=  topOffset;
-	if (height < maxImageHeight) 
+	if (height < maxImageHeight)
 		height = maxImageHeight; // make sure there is enough room for icon;
 
 	return height;
@@ -274,7 +274,7 @@ function calculateBackgroundHeight ()
 function calculateBackgroundWidth ()
 {
 	var w = 284 + leftOffset;
-	
+
 	return w > maxImageWidth ? w : maxImageWidth;
 }
 
@@ -292,7 +292,7 @@ function getMoonPhaseIcon (phase)
 			return getPathForPhases() + "moon-"+phase+".png";
 
 	} catch (ex) {}
-	
+
 	// always fall back to our full moon pic
 	return "Images/Icons/moonphases/moon-13.png";
 }
@@ -314,19 +314,19 @@ function handleDataFetched (object)
 	document.getElementById('updatetime').innerText =
 			h + ':' + m + ' ' + ampm;
 	updateLocationString(object.city);
-	
+
 	var fontSize;
 	if(convertToCelcius(object.temp) < -99)
-		fontSize = "39px"; 
+		fontSize = "39px";
 	else
 		fontSize = "49px";
-	
+
 	document.getElementById('temperature').style.fontSize = fontSize;
 	document.getElementById('temperature').innerText = window.currentTemp = convertToCelcius(object.temp);
-	
-	
+
+
 	link = object.link;
-	
+
 	if (object.city)
 	{
 		if (object.city != locationString && window.widget)
@@ -350,7 +350,7 @@ function handleDataFetched (object)
 				document.getElementById('bottom').style.backgroundImage = hidpiPath('url(Images/weather_night_bottom.png)');
 				document.getElementById('dayband').src = hidpiPath('Images/forecast_dayband_night.png');
 				changeLowsColor (true);
-				
+
 				isItNight = true;
 			}
 		}
@@ -368,14 +368,14 @@ function handleDataFetched (object)
 			}
 		}
 	}
-	
+
 	fillInDays (object);
 	fillInForecast (object);
-	
+
 	if (lastIcon != object.icon)
 	{
 		var iconContainer = document.getElementById('icon-holder');
-		
+
 		// remove all children
 		while (iconContainer.hasChildNodes())
 			iconContainer.removeChild(iconContainer.firstChild);
@@ -387,21 +387,21 @@ function handleDataFetched (object)
 		topOffset = 0;
 		maxImageWidth = 0;
 		maxImageHeight = 0;
-		var frontPanel = document.getElementById('front-panel');	
+		var frontPanel = document.getElementById('front-panel');
 		var backPanel = document.getElementById('back');
-		
+
 		frontPanel.style.top = "0";
 		frontPanel.style.left = "0";
 		backPanel.style.top = "0";
 		backPanel.style.left = "0";
-		
+
 		if (windAnimation.timer != null)
 		{
 			clearInterval (windAnimation.timer);
 			windAnimation.timer = null;
 		}
 		windAnimation.animating = false;
-			
+
 		if (object.icons != null)
 		{
 			var iconData = new Array;
@@ -416,16 +416,16 @@ function handleDataFetched (object)
 				{
 					iconData.push(entry);
 					maxOffset = entry.voffset > maxOffset ? entry.voffset : maxOffset;
-					
+
 					if (entry.hoffset < 0)
 					{
 						var offset = -entry.hoffset;
 						maxLeftOffset = offset > maxLeftOffset ? offset : maxLeftOffset;
 					}
-					
+
 				}
 			}
-			
+
 			if (iconData.length > 0)
 			{
 				// there are no images with negative vertical offsets
@@ -433,13 +433,13 @@ function handleDataFetched (object)
 				frontPanel.style.left = maxLeftOffset + "px";
 				backPanel.style.top = maxOffset + "px";
 				backPanel.style.left = maxLeftOffset + "px";
-				
+
 				topOffset = maxOffset;
 				leftOffset = maxLeftOffset;
-				
+
 				if (object.description == null)
 					object.description = "";
-					
+
 				for (var i = 0; i < iconData.length; ++i)
 				{
 					var item = iconData[i];
@@ -464,7 +464,7 @@ function handleDataFetched (object)
 					maxImageHeight = (t + item.height) > maxImageHeight ? (t + item.height) : maxImageHeight;
 					maxImageWidth = (l + item.width) > maxImageWidth ? (l + item.width) : maxImageWidth;
 					iconContainer.appendChild(img);
-					
+
 					if (item.animate) // its the wind
 					{
 						windAnimation.timer = setInterval (windAnimate, 30);
@@ -479,20 +479,20 @@ function handleDataFetched (object)
 		// now resize the window.
 		var height = calculateBackgroundHeight();
 		var width = calculateBackgroundWidth();
-		
+
 		if (totalWidgetHeight != height || width != totalWidgetWidth || lastTopOffset != topOffset || lastLeftOffset != leftOffset)
 		{
 			totalWidgetHeight = height;
 			totalWidgetWidth = width;
-			
+
 			if (window.widget)
 			{
 				var isReloadedWidget = new Boolean(widget.preferenceForKey(createkey("reloadedWidget"))).valueOf();
-				
+
 				var x = (window.screenX + lastLeftOffset) - leftOffset;
 				var y = (window.screenY + lastTopOffset) - topOffset;
 				widget.resizeAndMoveTo (x, y, width, height);
-								
+
 				// reset the close box offset as necessary
 				if (lastTopOffset != topOffset || lastLeftOffset != leftOffset)
 				{
@@ -503,14 +503,14 @@ function handleDataFetched (object)
 				widget.setPreferenceForKey(null, createkey("reloadedWidget"));
 
 			}
-			
+
 		}
 	}
-	
+
 	// accessible summary of header
 	var currentSummary = getLocalizedString('%1 %2 %3º').replace('%1',currentLocation).replace('%2',currentWeather).replace('%3',currentTemp);
 	document.title = getLocalizedString('WidgetDisplayName:') + ' ' + currentSummary;
-	document.getElementById('location').setAttribute('aria-label', currentSummary);	
+	document.getElementById('location').setAttribute('aria-label', currentSummary);
 }
 
 function dataFetched (object)
@@ -543,14 +543,14 @@ function fetchAnimationTimer ()
 {
 	var time = (new Date).getTime();
 	var fraction;
-	
+
 	if (fetchingAnimation.up)
 		fraction = (time - fetchingAnimation.start) / fetchingAnimation.duration;
 	else
 		fraction = 1.0 - (time - fetchingAnimation.start) / fetchingAnimation.duration;
-	
+
 	fetchingAnimation.alphaNow = fraction;
-	
+
 	if (fetchingAnimation.alphaNow > 1.0)
 	{
 		fetchingAnimation.start = time;
@@ -563,11 +563,11 @@ function fetchAnimationTimer ()
 		fetchingAnimation.alphaNow = 0.0;
 		fetchingAnimation.up = true;
 	}
-	
+
     var sine = Math.sin((Math.PI/2.0) * fetchingAnimation.alphaNow);
 
     fetchingAnimation.alphaNow = sine * sine;
-    
+
     document.getElementById('dot').style.opacity = fetchingAnimation.alphaNow;
 }
 
@@ -578,7 +578,7 @@ function startFetchingAnimation ()
 		clearInterval (fetchingAnimation.timer);
 		fetchingAnimation.timer = null;
 	}
-	
+
 	fetchingAnimation.up = false;
 	fetchingAnimation.alphaNow = 1.0;
 	fetchingAnimation.start = (new Date).getTime() - 60;
@@ -595,7 +595,7 @@ function endFetchingAnimation ()
 		clearInterval (fetchingAnimation.timer);
 		fetchingAnimation.timer = null;
 	}
-	
+
 	document.getElementById('dot').style.display = 'none';
 }
 
@@ -610,7 +610,7 @@ function abortFetchDataIfNeeded()
 function fetchData()
 {
 	abortFetchDataIfNeeded();
-	
+
 	lastWeatherXMLRequest = fetchWeatherData (dataFetched, postal);
 	startFetchingAnimation();
 }
@@ -618,7 +618,7 @@ function fetchData()
 function doLoad ()
 {
 	topoffset = 0;
-	
+
 	if(postal != undefined)
 	{
 		fetchData();
@@ -632,9 +632,9 @@ function showbackside (event)
 {
 	var front = document.getElementById("front");
 	var back = document.getElementById("back");
-	
+
 	isShowingFront = false;
-	
+
 	if (window.widget)
 	{
 		// reisze the widget to the large size
@@ -648,26 +648,26 @@ function showbackside (event)
 			resizedWhenShowedBack = false;
 		widget.prepareForTransition("ToBack");
 	}
-	
+
 	front.style.display="none";
 	back.style.display="block";
-	
+
 	if (window.widget)
 		setTimeout ('widget.performTransition();', 0);
-	
+
 	// do not receive updates when showing the backside
 	if (timer != null)
 	{
 		clearInterval(timer);
 		timer = null;
 	}
-		
+
 	if(event)
 	{
 		event.stopPropagation();
-		event.preventDefault();		
+		event.preventDefault();
 	}
-	
+
 	validateTypingTimer = null;
 	setTimeout("selectAllInZipTextField();", 0);
 
@@ -677,7 +677,7 @@ function showfront ()
 {
 	if(!zipValidated) //dont let them flip it back over without choosing
 		return;
-	
+
 	var front = document.getElementById("front");
 	var back = document.getElementById("back");
 
@@ -685,25 +685,25 @@ function showfront ()
     validateTypingTimer = null;
 
 	isShowingFront = true;
-	
+
 	if (window.widget)
 		widget.prepareForTransition("ToFront");
-	
+
 	front.style.display="block";
 	back.style.display="none";
-	
+
 	if (window.widget)
 		setTimeout ('widget.performTransition();', 0);
-	
+
 	// we may need to delay this to after the flip is complete
 	updateUI();
-	
+
 	if (resizedWhenShowedBack)
 	{
 		window.resizeTo (calculateBackgroundWidth(), calculateBackgroundHeight());
 		resizedWhenShowedBack = false;
 	}
-	
+
 	if (dataSetWhenObjectWasFlipped != null)
 	{
 		handleDataFetched (dataSetWhenObjectWasFlipped);
@@ -713,10 +713,10 @@ function showfront ()
 
 //set from data in the zipcodes array
 function setStateFromKnownZipData (data) {
-	
+
 	locationString = zip = data["cityName"];
 	postal = data["postal"];
-	
+
 	if(data["country"] == "US")
 		zip += ", " + data["state"];
 	else if (data["state"] && data["country"])
@@ -724,7 +724,7 @@ function setStateFromKnownZipData (data) {
 
 	if(widget) {
 		widget.setPreferenceForKey(zip, createkey("yahooBacksideCityString"));
-		widget.setPreferenceForKey(postal, createkey("yahooPostal"));		
+		widget.setPreferenceForKey(postal, createkey("yahooPostal"));
 	}
 
 	//ui related
@@ -734,16 +734,16 @@ function setStateFromKnownZipData (data) {
 }
 
 
-function startFetchDataTimer() 
+function startFetchDataTimer()
 {
 	if (timer == null)
 		timer = setInterval('fetchData();', timerInterval);
 }
 
 
-function stopFetchDataTimer() 
+function stopFetchDataTimer()
 {
-	if (timer != null) 
+	if (timer != null)
 	{
 		// we were hidden clear the timer
 		clearInterval(timer);
@@ -753,11 +753,11 @@ function stopFetchDataTimer()
 
 
 
-function updateUI() 
+function updateUI()
 {
 	var newZip = document.getElementById('zip').value;
 	var newPostal = document.getElementById('zip').postal;
-	
+
 	if (newPostal && postal != newPostal)
 	{
 		zip = newZip;
@@ -794,7 +794,7 @@ function animate () {
 	var time  = (new Date).getTime();
 	var yLoc;
 	var frame;
-		
+
 	T = limit_3(time-resizeAnimation.startTime, 0, resizeAnimation.duration);
 	ease = 0.5 - (0.5 * Math.cos(Math.PI * T / resizeAnimation.duration));
 
@@ -803,29 +803,29 @@ function animate () {
 		yLoc = resizeAnimation.positionTo;
 		clearInterval (resizeAnimation.timer);
 		resizeAnimation.timer = null;
-		
+
 		if (resizeAnimation.onfinished)
 			setTimeout ("resizeAnimation.onfinished();", 0); // call after the last frame is drawn
 	}
 	else
 		yLoc = computeNextFloat(resizeAnimation.positionFrom, resizeAnimation.positionTo, ease);
-		
+
 	// convert to a integer, not sure if this is the best way
 	resizeAnimation.positionNow = parseInt(yLoc);
 	resizeAnimation.element.style.height = resizeAnimation.positionNow + "px";
 }
 
 function animFinished(isSyncing) {
-	
+
 	if (window.widget)
 	{
 		if (isCollapsed)
 		{
 			totalWidgetHeight = calculateBackgroundHeight();
-			
+
 			window.resizeTo (calculateBackgroundWidth(), totalWidgetHeight);
 		}
-		
+
 		if (!isSyncing) {
 			widget.setPreferenceForKey (isCollapsed ? "true" : "false", createkey("collapsed"));
 		}
@@ -834,7 +834,7 @@ function animFinished(isSyncing) {
 
 var demoOverride = null;
 var demoIndex=-1;
-var demoIcons = 
+var demoIcons =
 [
 	["sun"], 					// 1 Sunny
 	["partlycloudy"],			// 3 Partly Sunny
@@ -872,7 +872,7 @@ var demoObject = {
 			 	{daycode:"SAT", hi:60, lo:40},
 			 	{daycode:"SUN", hi:70, lo:40},
 			 	{daycode:"MON", hi:80, lo:40},
-			 	
+
 			 ],
 	icon: 1,
 	icons:["sun"],
@@ -885,13 +885,13 @@ function toggleView(event) {
 	topoffset = 0;
 
 	if (event.altKey && event.metaKey)
-	{				
+	{
 		demoIndex++;
 		if (demoIndex >= demoIcons.length)
 			demoIndex = 0;
-			
+
 		demoObject.icons = demoIcons[demoIndex];
-		
+
 		if (demoIndex < demoNightIndex)
 		{
 			// day
@@ -902,7 +902,7 @@ function toggleView(event) {
 			//night
 			demoObject.sunset = {hour:6, minute:0};
 		}
-		
+
 		handleDataFetched(demoObject);
 	}
 	else
@@ -931,7 +931,7 @@ function resizeForCurrentCollapsedState(isSyncing) {
 		resizeAnimation.duration = 250 * multiplier;
 		resizeAnimation.positionFrom = startingSize;
 	}
-	
+
 	var resizeTo = isCollapsed ? 15 : (showLows ? 126 : 106);
 	totalWidgetHeight = calculateBackgroundHeight();
 	if (!isCollapsed && window.widget)
@@ -940,7 +940,7 @@ function resizeForCurrentCollapsedState(isSyncing) {
 	resizeAnimation.positionTo = parseInt(resizeTo); // lots of hard coding, yum...
 	resizeAnimation.startTime = timeNow - 13; // set it back one frame.
 	resizeAnimation.onfinished = function(){animFinished(isSyncing);};
-	
+
 	resizeAnimation.element.style.height = startingSize + "px";
 	resizeAnimation.timer = setInterval (animate, 13);
 	animate();
@@ -954,10 +954,10 @@ function flipAnimate()
 	var T;
 	var ease;
 	var time = (new Date).getTime();
-		
-	
+
+
 	T = limit_3(time-flipAnimation.starttime, 0, flipAnimation.duration);
-	
+
 	if (T >= flipAnimation.duration)
 	{
 		clearInterval (flipAnimation.timer);
@@ -969,7 +969,7 @@ function flipAnimate()
 		ease = 0.5 - (0.5 * Math.cos(Math.PI * T / flipAnimation.duration));
 		flipAnimation.now = computeNextFloat (flipAnimation.from, flipAnimation.to, ease);
 	}
-	
+
 	flipAnimation.element.style.opacity = flipAnimation.now;
 }
 
@@ -983,9 +983,9 @@ function mousemove (event)
 			clearInterval (flipAnimation.timer);
 			flipAnimation.timer  = null;
 		}
-		
+
 		var starttime = (new Date).getTime() - 13; // set it back one frame
-		
+
 		flipAnimation.duration = 500;
 		flipAnimation.starttime = starttime;
 		flipAnimation.element = document.getElementById ('flip');
@@ -1007,9 +1007,9 @@ function mouseexit (event)
 			clearInterval (flipAnimation.timer);
 			flipAnimation.timer  = null;
 		}
-		
+
 		var starttime = (new Date).getTime() - 13; // set it back one frame
-		
+
 		flipAnimation.duration = 500;
 		flipAnimation.starttime = starttime;
 		flipAnimation.element = document.getElementById ('flip');
@@ -1032,7 +1032,7 @@ function zipChanged()
 		lastLocationXMLRequest.abort();
 		lastLocationXMLRequest = null;
 	}
-	
+
 	lastLocationXMLRequest = validateWeatherLocation (newZip, validationCallback);
 
 	// start the the validate timer
@@ -1054,12 +1054,12 @@ function zipKeyPress (event)
 	showUpgradeMessage = false; //see backclicked()
 
     _dismissValidation();
-        
+
 	switch (event.keyCode)
 	{
 		case 13: // return
 		case 3:  // enter
-			if (zipValidated) 
+			if (zipValidated)
 			{
 				showfront();
 				break;
@@ -1072,17 +1072,17 @@ function zipKeyPress (event)
                 var zipinput = document.getElementById('zip');
                 if (zipinput.value.length > 0)
                     zipChanged();
-			} 
+			}
 
 			break;
 
         case 8: // delete
             shouldIgnoreInputEvent = true;  // don't trigger delayed validation
-            zipValidated = false;                
+            zipValidated = false;
             break;
-            
+
         default:
-            zipValidated = false;                
+            zipValidated = false;
             // otherwise pass through to zipTyping()
 	}
 }
@@ -1108,27 +1108,27 @@ function _dismissValidation ()
         clearTimeout(validateTypingTimer);
         validateTypingTimer = null;
     }
-        
+
     if (validateTimerData)
     {
         clearInterval(validateTimerData.timer);
         validateTimerData = null;
     }
-    
+
     validationObject = null;
-    
+
     document.getElementById('validate').style.display = 'none';
 }
 
 function backClicked (event)
 {
-	//popup menu if they haven't chosen yet. If they start typing a loc, showUpgradeMessage will be set to false. 
+	//popup menu if they haven't chosen yet. If they start typing a loc, showUpgradeMessage will be set to false.
 	if(!zipValidated && showUpgradeMessage && event.target.id != "zip")
 		validationCallbackDelayed();
 }
 
 function validateSelectFocused (select)
-{    
+{
     // refuse focus and return focus to the text field
     var zipinput = document.getElementById('zip');
     zipinput.focus();
@@ -1174,7 +1174,7 @@ function validationCallbackDelayed ()
 
 	if(!validationObject)
 		return;
-		
+
 	if (validationObject.error || validationObject.cities.length <= 0)
 	{
 		if (menu != null)
@@ -1194,7 +1194,7 @@ function validationCallbackDelayed ()
 		}
 
 		var c =  validationObject.cities.length;
-		
+
 		if ((c == 1 || window.widget === undefined))
 		{
 			// just set the contents if their is only one city.
@@ -1213,7 +1213,7 @@ function validationCallbackDelayed ()
 				var city = validationObject.cities[i];
 				menu.addMenuItem (city.name + ", " + city.state);
 			}
-			
+
 			if (validationObject.refine && !showUpgradeMessage)
 			{
 				menu.addMenuItem (getLocalizedString('Try a more specific search'));
@@ -1221,37 +1221,37 @@ function validationCallbackDelayed ()
 			}
 		}
 	}
-	
+
 	if (menu != null)
 	{
 		var selectedItem = menu.popup (leftOffset + 25, topOffset + 52);
-		
+
 		if (selectedItem >= 0)
 		{
 			if(showUpgradeMessage) selectedItem-=1; //in this case indexes dont happen to line up
-			
+
 			var city = validationObject.cities[selectedItem];
 			var zipinput = document.getElementById('zip');
 			zipinput.value = city.name + ", " + city.state;
 			zipinput.postal = city.zip;
 
 			zipValidated = true;
-		
+
 			zipinput.select();
 
 			validationObject = null;
 			showUpgradeMessage = false;
 		}
-	}	
+	}
 }
 
 function validationCallback (object)
 {
     _dismissValidation();
-	
+
 	if (!isShowingFront)
-	{	
-		// force a redraw before we present a menu, otherwise the 
+	{
+		// force a redraw before we present a menu, otherwise the
 		// validating text will not disappear.
 		validationObject = object;
 		setTimeout("validationCallbackDelayed();", 0);
@@ -1261,12 +1261,12 @@ function validationCallback (object)
 function backgroundValidationCallback (object)
 {
 	lastLocationXMLRequest = null;
-	
+
 	if (!object.error)
 	{
 		if(showUpgradeMessage && object.cities.length != 1)
 		{
-			//on an upgrade, go show the menu			
+			//on an upgrade, go show the menu
 			validationObject = object;
 			setTimeout("showbackside();", 0);
 			setTimeout("validationCallbackDelayed();", 1000);
@@ -1278,10 +1278,10 @@ function backgroundValidationCallback (object)
 			var zipinput = document.getElementById('zip');
 			zip = city.name + ", " + city.state;
 			zipinput.value = zip;
-			zipinput.postal = city.zip;	
+			zipinput.postal = city.zip;
 			postal = city.zip;
 			doLoad();
-			
+
 			zipValidated = true;
 			widget.setPreferenceForKey (postal, createkey("yahooPostal"));
 			widget.setPreferenceForKey (zip, createkey("yahooBacksideCityString"));
@@ -1327,12 +1327,12 @@ function doPreloadSetup()
 	}
 }
 
-function loadPreferences() 
+function loadPreferences()
 {
 	if (window.widget)
 	{
 		var pref = widget.preferenceForKey (createkey("show-lows"));
-		
+
 		// existence of preference means to show lows
 		if (pref != null)
 		{
@@ -1346,7 +1346,7 @@ function loadPreferences()
 			showLows = false;
 			document.getElementById('6daylow').checked = false;
 		}
-		
+
 		pref = widget.preferenceForKey(createkey("collapsed"));
 		if (pref == "false")
 		{
@@ -1358,32 +1358,32 @@ function loadPreferences()
 			needsToResize = true;
 			isCollapsed = true;
 		}
-		
+
 		if (!isCollapsed)
 		{
 			document.getElementById('middle').style.height = (showLows ? 126 : 106) + "px";
 		}
-		
+
 		pref = widget.preferenceForKey(createkey("celcius"));
 
 		if(pref != null)
 		{
 			if (pref == true)
-				isCelcius = true;			
+				isCelcius = true;
 		}
 		else
-		{			
+		{
 			//if there is no unit pref, but there is a savedcity pref this is a synced existing widget from Leopard
-			if (widget.preferenceForKey(createkey("savedcity"))) 
+			if (widget.preferenceForKey(createkey("savedcity")))
 			{
-				isCelcius = false;	
+				isCelcius = false;
 			}
-			else //in here we think it's a brand new widget. Try usesMetricUnits first. 
+			else //in here we think it's a brand new widget. Try usesMetricUnits first.
 			{
 				if(window.widget && widget.usesMetricUnits && widget.usesMetricUnits())
 					isCelcius = true;
 				else if (getLocalizedString ('UseCelcius') == '1')
-					isCelcius = true;				
+					isCelcius = true;
 			}
 
 			//write it out right away, so we explicitly tell any synced leopard widgets what to do
@@ -1391,7 +1391,7 @@ function loadPreferences()
 		}
 
 		document.getElementById('tempunits').options[ isCelcius ? 1 : 0 ].selected = true;
-	
+
 		pref = widget.preferenceForKey(createkey("yahooFrontsideCityString"));
 		if (pref != null)
 		{
@@ -1406,7 +1406,7 @@ function loadPreferences()
 			//set a lot of stuff to this zip
 			document.getElementById('zip').value = zip = newZip = widget.startupRequest['location'];
 			postal = null;
-			
+
 			// now do a validation.
 			if (widget.startupRequest['validate'])
 			{
@@ -1414,23 +1414,23 @@ function loadPreferences()
 					lastLocationXMLRequest.abort();
 					lastLocationXMLRequest = null;
 				}
-				lastLocationXMLRequest = validateWeatherLocation (zip, backgroundValidationCallback);				
+				lastLocationXMLRequest = validateWeatherLocation (zip, backgroundValidationCallback);
 			}
-				
+
 			else
 				widget.setPreferenceForKey (zip, createkey("yahooBacksideCityString"));
-		}		
+		}
 		else
 		{
 			var yahooPostalPref = widget.preferenceForKey(createkey("yahooPostal"));
 			var zipPref = null;
-			
+
 			if (yahooPostalPref != null) //if we have a yahoo pref, use it
 			{
 				zipPref = widget.preferenceForKey(createkey("yahooBacksideCityString"));
 				if(!zipPref) //should only have yahooPostal but not backside if it's older SL -> SL
 					zipPref = widget.preferenceForKey(createkey("zip"));
-				
+
 				postal = yahooPostalPref;
 				document.getElementById('zip').value = zip = zipPref;
 				zipValidated = true;
@@ -1439,18 +1439,18 @@ function loadPreferences()
 			{
 				var zipData = null;
 				zipPref = widget.preferenceForKey(createkey("zip")); //get the accuweather string
-				
-				var locationName = (zipPref != null) ? zipPref : widget.closestCity();				
+
+				var locationName = (zipPref != null) ? zipPref : widget.closestCity();
 
 				zipData = knownDataForString(locationName);
-				
+
 				//if it's a first launch and for some reason we can't find the closestCity
 				if(!zipPref && !zipData)
 				{
 					locationName = "Cupertino";
 					zipData = knownDataForString(locationName);
 				}
-				
+
 				if(zipData)
 				{
 					zipValidated = true;
@@ -1470,8 +1470,8 @@ function loadPreferences()
 
 
 function knownDataForString (string) {
-	/* 
-	Try to find this location in the zipcodes array. 
+	/*
+	Try to find this location in the zipcodes array.
 	Assumes string is from closestCity or zip pref and probably in one of these forms
 		city
 		city, state
@@ -1500,26 +1500,26 @@ function knownDataForString (string) {
 				if(!data["country"] && inRegions[0] != data["state"]) //US, has only a state
 					data = null;
 				else if(data["country"] && !inRegions[0] == data["country"]) //not we are not comparing state, bc they differ on some names
-					data = null;		
+					data = null;
 			}
 		}
 	}
-	
+
 	return data;
 }
 
 function regionsFromLocationString (string) {
 	var openParenIndex = string.indexOf("(");
-	var closeParenIndex = string.indexOf(")");	
+	var closeParenIndex = string.indexOf(")");
 
 	var region1 = string;
 	var region2 = null;
-	
+
 	if(openParenIndex != -1)
 	{
 		region1 = string.substring(0, openParenIndex).trim();
 		region2 = string.substring(openParenIndex+1, closeParenIndex).trim();
-		
+
 		var innerParenIndex = region2.indexOf("(");
 		if(innerParenIndex != -1)
 			region2 = region2.substring(0, innerParenIndex).trim();
@@ -1532,7 +1532,7 @@ function populateTempUnits()
 {
 	var select = document.getElementById ('tempunits');
 	var element;
-	
+
 	element = document.createElement ("option");
 	element.innerText = getLocalizedString("ºF");
 	element.setAttribute('aria-label', getLocalizedString('Fahrenheit'));
@@ -1546,10 +1546,10 @@ function populateTempUnits()
 function unitsChanged (select)
 {
 	var isC = select.selectedIndex == 1;
-	
+
 	if (isC != isCelcius)
 	{
-		isCelcius = isC; 
+		isCelcius = isC;
 
 		if (window.widget)
 			widget.setPreferenceForKey(isCelcius, createkey("celcius"));
@@ -1590,7 +1590,7 @@ function receiverequest (request)
 				postal = locationString;
 				document.getElementById('zip').value = locationString;
 				fetchData ();
-				
+
 				widget.setPreferenceForKey (postal, createkey("yahooPostal"));
 				widget.setPreferenceForKey (zip, createkey("yahooBacksideCityString"));
 			}
@@ -1632,10 +1632,10 @@ var needsToResize = false;
 function specialFirstLoad ()
 {
 	var hasCelciusPref = false;
-	
+
 	var infobutton = new AppleInfoButton (document.getElementById('infobutton'), document.getElementById('front'), "white", "white", showbackside);
 	var done_button = new AppleGlassButton (document.getElementById('done'), getLocalizedString('Done'), showfront);
-	
+
 	document.getElementById('lowtext').innerText = getLocalizedString('Include lows in 6-day forecast');
 	document.getElementById('unitlabel').innerText = getLocalizedString('Degrees:');
 	document.getElementById('ziplabel').innerText = getLocalizedString('City, State or ZIP Code:');
@@ -1651,7 +1651,7 @@ function specialFirstLoad ()
 	document.getElementById('yahooLogo').src = hidpiPath('Images/yahoo.png');
 
 	populateTempUnits();
-	
+
 	doPreloadSetup();
 
 	if (!everBeenCalled)
@@ -1659,7 +1659,7 @@ function specialFirstLoad ()
 		onshow();
 		everBeenCalled = true;
 	}
-	
+
 }
 
 function unload()
@@ -1670,13 +1670,13 @@ function unload()
 	}
 }
 
-function onshow () 
+function onshow ()
 {
 	everBeenCalled = true;
 
 	if (timer != null)
 		clearInterval(timer);
-	
+
 	if (windAnimation.animating)
 	{
 		windAnimation.timer = setInterval (windAnimate, 30);
@@ -1685,22 +1685,22 @@ function onshow ()
 
 }
 
-function onhide () 
+function onhide ()
 {
 	stopFetchDataTimer()
-	
+
 	if (windAnimation.animating)
 	{
 		clearInterval(windAnimation.timer);
 		windAnimation.timer = null;
 	}
-	
+
 	// Stop dot pulsing animation. This is important because if we don't
 	// have Internet connectivity we will keep using 1% of CPU. (see <rdar://problem/7461609>)
 	endFetchingAnimation();
-	
+
 	abortFetchDataIfNeeded();
-	
+
 	// this will force window position to be saved
 	if (widget) {
 		widget.setPreferenceForKey (isCollapsed ? "true" : "false", createkey("collapsed"));
@@ -1708,7 +1708,7 @@ function onhide ()
 
 }
 
-function onsync() 
+function onsync()
 {
 	alert("------------- syncing");
 	doPreloadSetup();
@@ -1719,18 +1719,18 @@ function onsync()
 function windAnimate ()
 {
 	windAnimation.current +=1;
-	
+
 	if (windAnimation.current > 59) windAnimation.current = 0;
-	
+
 	var src = "Images/Icons/wind0";
-	
+
 	if (windAnimation.current < 10)
 		src += '0' + windAnimation.current;
 	else
 		src += windAnimation.current;
-		
+
 	src += '.png';
-	
+
 	windAnimation.img.src = hidpiPath(src);
 }
 
